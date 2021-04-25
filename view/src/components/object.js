@@ -204,7 +204,7 @@ class object extends Component {
 		const authToken = localStorage.getItem('AuthToken');
 		axios.defaults.headers.common = { Authorization: `${authToken}` };
 		axios
-			.get('/objects')
+			.get('/api/objects')
 			.then((response) => {
 				this.setState({
 					objects: response.data,
@@ -222,7 +222,7 @@ class object extends Component {
 		axios.defaults.headers.common = { Authorization: `${authToken}` };
 		let objectId = data.object.objectId;
 		axios
-			.delete(`object/${objectId}`)
+			.delete(`/api/object/${objectId}`)
 			.then(() => {
 				window.location.reload();
 			})
@@ -251,7 +251,7 @@ class object extends Component {
 		form_data.append('content', this.state.content);
 		axios.defaults.headers.common = { Authorization: `${authToken}` };
 		axios
-			.post(`http://localhost:5000/realtor-s-routines/us-central1/api/object/${this.state.objectId}/images`, form_data, {
+			.post(`/api/object/${this.state.objectId}/images`, form_data, {
 				headers: {
 					'content-type': 'multipart/form-data'
 				}
@@ -379,13 +379,13 @@ class object extends Component {
 			let options = {};
 			if (this.state.buttonType === 'Edit') {
 				options = {
-					url: `/object/${this.state.objectId}`,
+					url: `/api/object/${this.state.objectId}`,
 					method: 'put',
 					data: userObject
 				};
 			} else {
 				options = {
-					url: '/object',
+					url: '/api/object',
 					method: 'post',
 					data: userObject
 				};
@@ -663,9 +663,11 @@ class object extends Component {
 									
 						</form>
 					</Dialog>
-				{/* Main cards view */}
+				{/* Main cards view
+				TO add filter we should add a proper filter function based on the state filter property */}
 					<Grid container spacing={4}>
-						{this.state.objects.map((object) => (
+						{ !this.state.objects.length ? 'No listings Yet' :
+						this.state.objects.map((object) => (
 							
 							<Grid key={object.objectId} item xs={12}>
 								<Card className={classes.cardLayout} variant="outlined">
@@ -738,7 +740,7 @@ class object extends Component {
 						   </Dialog>
 							</Grid>
 						   
-						))}
+						)) }
 					</Grid>
 					<div>
      

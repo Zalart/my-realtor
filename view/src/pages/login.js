@@ -53,14 +53,14 @@ constructor(props){
     };
 }
 // заменить!!! Deprecated! getDerivedStateFromProps ???
-componentWillReceiveProps(nextProps) {
+/* componentWillReceiveProps(nextProps) {
     if (nextProps.UI.errors) {
         this.setState({
             errors: nextProps.UI.errors
         });
     }
 }
-
+ */
 handleChange = (event) => {
     this.setState({
         [event.target.name]: event.target.value
@@ -76,13 +76,13 @@ handleSubmit = (event) => {
         password: this.state.password
     };
     axios
-        .post('/login', userData)
+        .post('/api/login', userData)
         .then((response) => {
             localStorage.setItem('AuthToken', `Bearer ${response.data.token}`);
             this.setState({ 
                 loading: false,
             });		
-            this.props.history.push('/home');
+            this.props.history.push('/');
         })
         .catch((error) => {				
             this.setState({

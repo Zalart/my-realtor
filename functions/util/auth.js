@@ -14,6 +14,8 @@ module.exports = (request, response, next) => {
         // built-in token verification
 		.verifyIdToken(idToken)
 		.then((decodedToken) => {
+			//try this fix
+			//response.header("Access-Control-Allow-Origin", "*") 
 			request.user = decodedToken;
 			
             //ищем пользователя по userId

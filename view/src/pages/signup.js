@@ -82,9 +82,9 @@ class signup extends Component {
 			confirmPassword: this.state.confirmPassword
 		};
 		axios
-			.post('/signup', newUserData)
+			.post('/api/signup', newUserData)
 			.then((response) => {
-				localStorage.setItem('AuthToken', `${response.data.token}`);
+				localStorage.setItem('AuthToken', `Bearer ${response.data.token}`);
 				this.setState({ 
 					loading: false,
 				});	

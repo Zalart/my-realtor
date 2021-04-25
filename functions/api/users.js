@@ -114,6 +114,7 @@ const deleteImage = (imageName, storageBucket) => {
 
 // Upload profile picture
 exports.uploadProfilePhoto = (request, response) => {
+    console.log('start upload profile photo')
     const BusBoy = require('busboy');
 	const path = require('path');
 	const os = require('os');
@@ -152,9 +153,7 @@ exports.uploadProfilePhoto = (request, response) => {
               //  destination: `users/${imageFileName}`,
 				resumable: false,
 				metadata: {
-					
 				contentType: imageToBeUploaded.mimetype
-					
 				}
 			})
         })

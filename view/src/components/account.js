@@ -81,7 +81,7 @@ class account extends Component {
 		const authToken = localStorage.getItem('AuthToken');
 		axios.defaults.headers.common = { Authorization: `${authToken}` };
 		axios
-			.get('/user')
+			.get('/api/user')
 			.then((response) => {
 				console.log(response.data);
 				this.setState({
@@ -127,9 +127,11 @@ class account extends Component {
 		//console.log(this.state.content);
 		axios.defaults.headers.common = { Authorization: `${authToken}` };
 		axios
-			.post('http://localhost:5000/realtor-s-routines/us-central1/api/user/image', form_data, {
+			.post('/api/user/image', form_data, {
 				headers: {
-					'content-type': 'multipart/form-data'
+					'content-type': 'multipart/form-data',
+					'Access-Control-Allow-Origin' : '*',
+    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
 				}
 			})
 			.then(() => {
@@ -159,7 +161,7 @@ class account extends Component {
 			country: this.state.country
 		};
 		axios
-			.post('/user', formRequest)
+			.post('/api/user', formRequest)
 			.then(() => {
 				this.setState({ buttonLoading: false });
 			})

@@ -65,7 +65,7 @@ allowFilePoster={true}
 }}  
 server={{
             process: {
-              url: `http://localhost:5000/realtor-s-routines/us-central1/api/object/${this.props.objectId}/images`,
+              url: `/api/object/${this.props.objectId}/images`,
                headers: {
                  'Authorization': localStorage.getItem('AuthToken'),
                },
