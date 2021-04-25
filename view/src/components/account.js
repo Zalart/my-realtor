@@ -68,7 +68,6 @@ class account extends Component {
 			lastName: '',
 			email: '',
 			phoneNumber: '',
-			country: '',
 			profilePicture: '',
 			uiLoading: true,
 			buttonLoading: false,
@@ -89,7 +88,6 @@ class account extends Component {
 					lastName: response.data.userCredentials.lastName,
 					email: response.data.userCredentials.email,
 					phoneNumber: response.data.userCredentials.phoneNumber,
-					country: response.data.userCredentials.country,
 					uiLoading: false
 				});
 			})
@@ -157,8 +155,7 @@ class account extends Component {
 		axios.defaults.headers.common = { Authorization: `${authToken}` };
 		const formRequest = {
 			firstName: this.state.firstName,
-			lastName: this.state.lastName,
-			country: this.state.country
+			lastName: this.state.lastName
 		};
 		axios
 			.post('/api/user', formRequest)
@@ -289,7 +286,7 @@ class account extends Component {
 											onChange={this.handleChange}
 										/>
 									</Grid> */}
-									<Grid item md={6} xs={12}>
+{/* 									<Grid item md={6} xs={12}>
 										<TextField
 											fullWidth
 											label="Country"
@@ -299,7 +296,7 @@ class account extends Component {
 											value={this.state.country}
 											onChange={this.handleChange}
 										/>
-									</Grid>
+									</Grid> */}
 								</Grid>
 							</CardContent>
 							<Divider />
@@ -315,8 +312,7 @@ class account extends Component {
 						disabled={
 							this.state.buttonLoading ||
 							!this.state.firstName ||
-							!this.state.lastName ||
-							!this.state.country
+							!this.state.lastName 
 						}
 					>
 						Save details

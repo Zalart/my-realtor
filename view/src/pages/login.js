@@ -33,8 +33,9 @@ const styles = (theme) =>({
 	},
 	customError: {
 		color: 'red',
-		fontSize: '0.8rem',
-		marginTop: 10
+		fontSize: '1rem',
+		marginTop: 10,
+        textAlign: 'center'
 	},
 	progess: {
 		position: 'absolute'
@@ -115,6 +116,7 @@ render() {
                         label="Email Address"
                         name="email"
                         autoComplete="email"
+                        type="email"
                         autoFocus
                         helperText={errors.email}
                         error={errors.email ? true : false}
@@ -141,7 +143,7 @@ render() {
                         color="primary"
                         className={classes.submit}
                         onClick={this.handleSubmit}
-                        disabled={loading || !this.state.email || !this.state.password}
+                        disabled={loading || !this.state.email || this.state.password.length < 6}
                     >
                         Sign In
                         {loading && <CircularProgress size={30} className={classes.progess} />}

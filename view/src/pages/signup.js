@@ -46,7 +46,6 @@ class signup extends Component {
 			firstName: '',
 			lastName: '',
 			phoneNumber: '',
-			country: '',
 			email: '',
 			password: '',
 			confirmPassword: '',
@@ -76,7 +75,6 @@ class signup extends Component {
 			firstName: this.state.firstName,
 			lastName: this.state.lastName,
 			phoneNumber: this.state.phoneNumber,
-			country: this.state.country,
 			email: this.state.email,
 			password: this.state.password,
 			confirmPassword: this.state.confirmPassword
@@ -172,22 +170,6 @@ class signup extends Component {
 									onChange={this.handleChange}
 								/>
 							</Grid>
-
-							<Grid item xs={12}>
-								<TextField
-									variant="outlined"
-									required
-									fullWidth
-									id="country"
-									label="Country"
-									name="country"
-									autoComplete="country"
-									helperText={errors.country}
-									error={errors.country ? true : false}
-									onChange={this.handleChange}
-								/>
-							</Grid>
-
 							<Grid item xs={12}>
 								<TextField
 									variant="outlined"
@@ -229,7 +211,6 @@ class signup extends Component {
                                 !this.state.password ||
                                 !this.state.firstName || 
                                 !this.state.lastName ||
-                                !this.state.country || 
                                 !this.state.phoneNumber}
 						>
 							Sign Up

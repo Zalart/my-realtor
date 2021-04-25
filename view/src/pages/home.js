@@ -104,7 +104,6 @@ class home extends Component {
 					lastName: response.data.userCredentials.lastName,
 					email: response.data.userCredentials.email,
 					phoneNumber: response.data.userCredentials.phoneNumber,
-					country: response.data.userCredentials.country,
 					uiLoading: false,
 					profilePicture: response.data.userCredentials.imageUrl
 				});

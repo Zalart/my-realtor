@@ -39,7 +39,6 @@ exports.signUpUser = (request, response) => {
         lastName: request.body.lastName,
         email: request.body.email,
         phoneNumber: request.body.phoneNumber,
-        country: request.body.country,
 		password: request.body.password,
 		confirmPassword: request.body.confirmPassword,
 		//username: request.body.username
@@ -77,7 +76,6 @@ exports.signUpUser = (request, response) => {
                 lastName: newUser.lastName,
                 //username: newUser.username,
                 phoneNumber: newUser.phoneNumber,
-                country: newUser.country,
                 email: newUser.email,
                 createdAt: new Date().toISOString(),
                 userId
