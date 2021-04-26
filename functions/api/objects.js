@@ -41,11 +41,11 @@ exports.getAllObjects = (request, response) => {
 exports.postOneObject = (request, response) => {
 	     
     if(request.body.title.trim() === '') {
-        return response.status(400).json({ title: 'Title can not not be empty' });
+        return response.status(400).json({ title: 'Title can not be empty' });
     }
 
 	if(request.body.address.trim() === '') {
-        return response.status(400).json({ address: 'Address can not not be empty' });
+        return response.status(400).json({ address: 'Address can not be empty' });
     }
 
  	if (request.body.listingType.trim() === '') {
@@ -53,15 +53,15 @@ exports.postOneObject = (request, response) => {
     }
 
 	if (request.body.body.trim() === '') {
-		return response.status(400).json({ body: 'Can not not be empty' });
+		return response.status(400).json({ body: 'Please, provide some details' });
     }
 
  	if(request.body.price.trim() === '') {
-        return response.status(400).json({ price: 'Price can not not be empty' });
+        return response.status(400).json({ price: 'Price can not be empty' });
     }
 
 	if(request.body.area.trim() === '') {
-        return response.status(400).json({ area: 'Area can not not be empty' });
+        return response.status(400).json({ area: 'Area can not be empty' });
     } 
 
 	
