@@ -44,22 +44,24 @@ import FileUploader from './FIleUploader';
 
 
 const styles = ((theme) => ({
-    content: {
+     content: {
         flexGrow: 1,
         padding: theme.spacing(2),
-    },
+    }, 
     toolbar: theme.mixins.toolbar,
     title: {
 		marginLeft: theme.spacing(2),
 		flex: 1
 	},
 	submitButton: {
+		"&:hover, &.Mui-focusVisible": { backgroundColor: theme.palette.secondary.main},
 		display: 'block',
 		color: 'white',
 		textAlign: 'center',
 		position: 'absolute',
 		top: 14,
-		right: 10
+		right: 10, 
+		backgroundColor: theme.palette.secondary.light,
 	},
 	floatingButton: {
 		position: 'fixed',
@@ -69,11 +71,11 @@ const styles = ((theme) => ({
 	},
 	form: {
 		width: '98%',
-		marginLeft: 12,
-		marginTop: theme.spacing(10)
+		marginLeft: 13,
+		marginTop: theme.spacing(3)
 	},
 	root: {
-		minWidth: 350
+		minWidth: 470
 	},
 	bullet: {
 		display: 'inline-block',
@@ -91,7 +93,7 @@ const styles = ((theme) => ({
 		left: '50%',
 		top: '35%'
 	},
-	dialogeStyle: {
+	dialogStyle: {
 		maxWidth: '50%'
 	},
 	viewRoot: {
@@ -104,6 +106,8 @@ const styles = ((theme) => ({
 		top: theme.spacing(1),
 		color: theme.palette.grey[500]
 	},
+
+
 	formControl: {
 		marginLeft: theme.spacing(0),
 		minWidth: 150,
@@ -152,8 +156,10 @@ const styles = ((theme) => ({
 	  },
 	  inLineIcon: {
 		  verticalAlign: 'sub',
+	  },
+	  secondaryDark: {
+		  color: theme.palette.secondary.dark
 	  }
-
     })
 );
 
@@ -434,7 +440,7 @@ class object extends Component {
 
 					<IconButton
 						className={classes.floatingButton}
-						color="primary"
+						color="secondary"
 						aria-label="Add Object"
 						onClick={handleClickOpen}
 					>
@@ -459,7 +465,7 @@ class object extends Component {
 								</Button>
 							</Toolbar>
 						</AppBar>
-
+						<div className={classes.toolbar} />
 						<form className={classes.form} noValidate>
 						
 							<Grid container spacing={4}>
@@ -496,11 +502,11 @@ class object extends Component {
 							</Grid>
 				<Grid container spacing={4} direction="row-reverse">
 
-							<Grid container item md={6} xs={12} spacing={0}>
-								<Grid item xs={12}>
+							{/* <Grid container item md={6} xs={12} spacing={0}> */}
+								<Grid item md={6} xs={12}>
 									<YandexMap address={this.state.address} handleAddressChange={this.handleAddressChange} />
 								</Grid> 
-							</Grid>
+							{/* </Grid> */}
 
 					<Grid container item md={6} xs={12} spacing={2}>
 						<Grid container item xs={12} spacing={0}>
@@ -549,7 +555,7 @@ class object extends Component {
 						</Grid>
 
 
-						<Grid container item xs={12} spacing={2}>
+			<Grid container item xs={12} spacing={2}>
 						<Grid item xs={4}>
 									<TextField
 										variant="outlined"
@@ -624,7 +630,10 @@ class object extends Component {
         </Select>
       </FormControl>
 								</Grid>
-								<Grid item xs={12}>
+								
+						</Grid>
+
+<Grid item xs={12}>
 									<TextField
 										variant="outlined"
 										required
@@ -642,8 +651,6 @@ class object extends Component {
 										value={this.state.body}
 									/>
 								</Grid>
-						</Grid>
-
 					</Grid>
 								
 				</Grid>
@@ -666,7 +673,17 @@ class object extends Component {
 				{/* Main cards view
 				TO add filter we should add a proper filter function based on the state filter property */}
 					<Grid container spacing={4}>
-						{ !this.state.objects.length ? 'No listings Yet' :
+						{ !this.state.objects.length ? (
+							<Grid item xs={12}>
+								<Card className={classes.cardLayout} variant="outlined">
+								<CardContent className={classes.cardContent}>
+							<Typography component="h1" variant="h3" >
+								You have no listings yet...Try to add one
+							</Typography>
+							</CardContent>
+							</Card>
+							</Grid>
+							) :
 						this.state.objects.map((object) => (
 							
 							<Grid key={object.objectId} item xs={12}>
@@ -710,7 +727,7 @@ class object extends Component {
 									  </Tooltip>
 									{/* <IconButton size="medium" color="secondary" onClick={() => this.deleteObjectHandler({ object })} aria-label="delete"> */}
 									<Tooltip title="Delete" placement="left">
-									<IconButton size="large" color="secondary" onClick={handleConfirmDeleteOpen} aria-label="delete">
+									<IconButton size="large" className={classes.secondaryDark} onClick={handleConfirmDeleteOpen} aria-label="delete">
         								<DeleteIcon />
       								</IconButton>
 									  </Tooltip>
@@ -751,7 +768,7 @@ class object extends Component {
 						aria-labelledby="customized-dialog-title"
 						open={viewOpen}
 						fullWidth
-						classes={{ paperFullWidth: classes.dialogeStyle }}
+						classes={{ paperFullWidth: classes.dialogStyle }}
 					>
 						<DialogTitle id="customized-dialog-title" onClose={handleViewClose}>
 							{this.state.title}
@@ -806,4 +823,4 @@ class object extends Component {
 	}
 }
 
-export default (withStyles(styles)(object));
+export default withStyles(styles)(object);

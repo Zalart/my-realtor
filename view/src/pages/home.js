@@ -132,7 +132,7 @@ class home extends Component {
 					<AppBar position="fixed" className={classes.appBar}>
 						<Toolbar>
 							<Typography variant="h6" noWrap>
-								Realtor's Routines
+								My realtor
 							</Typography>
 						</Toolbar>
 					</AppBar>

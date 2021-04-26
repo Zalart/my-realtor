@@ -14,6 +14,11 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import FacebookIcon from '@material-ui/icons/Facebook';
+
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -48,12 +53,15 @@ const useStyles = makeStyles((theme) =>({
         justifyContent: 'center'
     },
     footerWrapper: {
-        maxMidth: 1280
+        maxMidth: 1280,
+        alignItems: 'flex-start'
+
     },
-    footerLogoWrapper: {
+    footerColWrapper: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     paper: {
 		display: 'flex',
@@ -92,7 +100,9 @@ const useStyles = makeStyles((theme) =>({
 	},
     footer: {
         backgroundColor: '#42444e',
-        flex: '0 0 auto'
+        flex: '0 0 auto',
+        marginTop: theme.spacing(3),
+        padding: theme.spacing(4, 2)
     },
     secondaryMain:{
         color: theme.palette.secondary.main
@@ -116,12 +126,21 @@ const useStyles = makeStyles((theme) =>({
         color: '#FFF'
     },
     lightText: {
+        color: '#888'
+    },
+    lightItalicText: {
         color: '#888',
         fontStyle: 'italic'
     },
     progress: {
 		position: 'absolute'
-	}
+	},
+    customHoverFocus: {
+        "&:hover, &.Mui-focusVisible": { backgroundColor: 'rgba(255, 255, 255, .2)'},
+        margin: theme.spacing(0, 1)
+       
+      }
+
 }));
 
 const initialState = {
@@ -200,8 +219,8 @@ const handleSubmit = (event) => {
                 </Typography>
                 </Box>
                 <Box pt={4}>
-                <Typography component="h2" variant="h5" className={classes.lightText} >
-                    Easy listing integration solution 
+                <Typography component="h2" variant="h5" className={classes.lightItalicText} >
+                    A no-fuss listing integration solution 
                 </Typography>
                 </Box>
                 </Grid>
@@ -268,7 +287,7 @@ const handleSubmit = (event) => {
                         disabled={loading || !state.email || state.password.length < 6}
                     >
                         Sign In
-                        {loading && <CircularProgress size={30} className={classes.progess} />}
+                        {loading && <CircularProgress size={30} className={classes.progress} />}
                     </Button>
                     <Grid container>
                         <Grid item>
@@ -287,24 +306,45 @@ const handleSubmit = (event) => {
         </Box>
 
       {/*   //Footer */}
-        <Box py={4} className={classes.footer}>
+      <Box width={'100%'}>
+        <Box className={classes.footer}>
         <Container>
-            <Grid container spacing={4} className={classes.footerWrapper}>
-                <Grid item xs={12} md={4} lg={3} className={classes.footerLogoWrapper}>
+            <Grid container spacing={1} className={classes.footerWrapper}>
+                <Grid item xs={12} md={4} lg={4} className={classes.footerColWrapper}>
                     <Box component={'img'}
-                  width={80}
+                  width={120}
                   src={logoGray}
-                  mx={5}
+                 
                   
                    alt='My realtor'
-                  />
-                  
+                  /> 
+                 <Typography variant="body2" className={classes.contrastText}>© My realtor, Belarus</Typography>
                   </Grid>
-          
-                <Grid item xs={12} md={4} lg={3}><Typography variant="body1" className={classes.contrastText}>Footer here</Typography></Grid>
+                <Grid item xs={12} md={4} lg={4} className={classes.footerColWrapper}>
+                    <Typography variant="body2" className={classes.contrastText}>Created with ❤️ In Belarus</Typography>  <Typography variant="body2" className={classes.contrastText}>for © WildCodeSchool Demo Day</Typography>
+                    <Box className={classes.lightText} py={1}>
+                        <IconButton color="primary" className={classes.customHoverFocus} aria-label="Github">
+                        <GitHubIcon onClick={event =>  window.location.href='https://github.com/Zalart/my-realtor'}/>
+                        </IconButton>
+                        <IconButton color="primary" className={classes.customHoverFocus} aria-label="LinkedIn">
+                        <LinkedInIcon onClick={event =>  window.location.href='https://www.linkedin.com/in/zalart/'}/>
+                        </IconButton>
+                        <IconButton color="primary" className={classes.customHoverFocus} aria-label="Facebook">
+                        <FacebookIcon onClick={event =>  window.location.href='https://www.facebook.com/profile.php?id=100003622561803'}/>
+                        </IconButton>
+                    </Box>
+                    </Grid>
+                <Grid item xs={12} md={4} lg={4} className={classes.footerColWrapper}>
+                <Box className={classes.lightText}>Collaborated by:</Box>
+                <Box p={1} className={classes.contrastText}>Artur Zalewski</Box>
+                <Box className={classes.contrastText}>Alexey Fokin</Box>
                 </Grid>
+                
+                </Grid>
+                
         </Container>
                
+        </Box>
         </Box>
         </div>
     );
