@@ -5,6 +5,9 @@ import Account from '../components/account';
 import Listing from '../components/object';
 
 import Drawer from '@material-ui/core/Drawer';
+import MenuIcon from '@material-ui/icons/Menu';
+import Hidden from '@material-ui/core/Hidden';
+import IconButton from '@material-ui/core/IconButton';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -20,29 +23,69 @@ import NotesIcon from '@material-ui/icons/Notes';
 import Avatar from '@material-ui/core/Avatar';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 import { authMiddleWare } from '../util/auth';
 
-const drawerWidth = 230;
+const drawerWidth = 240;
 
 const styles = (theme) => ({
 	root: {
-		display: 'flex'
+		display: 'flex',
 	},
 	appBar: {
 		zIndex: theme.zIndex.drawer + 1
 	},
+/* 	appBar: {
+		[theme.breakpoints.up('sm')]: {
+		  width: `calc(100% - ${drawerWidth}px)`,
+		  marginLeft: drawerWidth,
+		},
+	  }, */
+	  menuButton: {
+		marginRight: theme.spacing(2),
+		[theme.breakpoints.up('sm')]: {
+		  display: 'none',
+		},
+	  },
 	drawer: {
-		width: drawerWidth,
-		flexShrink: 0
+		[theme.breakpoints.up('sm')]: {
+		  width: drawerWidth,
+		  flexShrink: 0,
+		},
 	},
 	drawerPaper: {
-		width: drawerWidth
-	},
+		width: drawerWidth,
+	  },
+	  // necessary for content to be below app bar
+	  toolbar: theme.mixins.toolbar,
+	drawerContainer: {
+		overflow: 'auto',
+	  },
+	  drawerHeader: {
+		display: 'flex',
+		alignItems: 'center',
+		padding: theme.spacing(0, 1),
+		// necessary for content to be below app bar
+		...theme.mixins.toolbar,
+		justifyContent: 'flex-end',
+	  },
 	content: {
 		flexGrow: 1,
-		padding: theme.spacing(3)
+		padding: theme.spacing(3),
+		transition: theme.transitions.create('margin', {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.leavingScreen,
+		  }),
+		  marginLeft: -drawerWidth,
 	},
+	contentShift: {
+		transition: theme.transitions.create('margin', {
+		  easing: theme.transitions.easing.easeOut,
+		  duration: theme.transitions.duration.enteringScreen,
+		}),
+		marginLeft: 0,
+	  },
 	avatar: {
 		height: 100,
 		width: 100,
@@ -53,12 +96,11 @@ const styles = (theme) => ({
 	uiProgess: {
 		position: 'fixed',
 		zIndex: '1000',
-		height: '31px',
-		width: '31px',
-		left: '50%',
+		height: '40px',
+		width: '40px',
+		right: '45%',
 		top: '35%'
-	},
-	toolbar: theme.mixins.toolbar
+	}
 });
 
 class home extends Component {
@@ -67,10 +109,12 @@ class home extends Component {
 	};
 
 	loadAccountPage = (event) => {
+		this.handleDrawerClose();
 		this.setState({ render: true });
 	};
 
 	loadListingsPage = (event) => {
+		this.handleDrawerClose();
 		this.setState({ render: false });
 	};
 
@@ -78,6 +122,13 @@ class home extends Component {
 		localStorage.removeItem('AuthToken');
 		this.props.history.push('/login');
 	};
+
+	handleDrawerOpen = () => {
+		this.setState({ mobileOpen: true });
+	  };
+	handleDrawerClose = () => {
+		this.setState({ mobileOpen: false });
+	  };
 
 	constructor(props) {
 		super(props);
@@ -87,9 +138,11 @@ class home extends Component {
 			lastName: '',
 			profilePicture: '',
 			uiLoading: true,
-			imageLoading: false
+			imageLoading: false,
+			mobileOpen: false
 		};
 	}
+
 
 	componentWillMount = () => {
 		authMiddleWare(this.props.history);
@@ -118,32 +171,17 @@ class home extends Component {
 	};
 
 	render() {
-		const { classes } = this.props;		
+		const { classes, window } = this.props;		
 		if (this.state.uiLoading === true) {
 			return (
 				<div className={classes.root}>
-					{this.state.uiLoading && <CircularProgress size={150} className={classes.uiProgess} />}
+					{this.state.uiLoading && <CircularProgress className={classes.uiProgess} />}
 				</div>
 			);
 		} else {
-			return (
-				<div className={classes.root}>
-					<CssBaseline />
-					<AppBar position="fixed" className={classes.appBar}>
-						<Toolbar>
-							<Typography variant="h6" noWrap>
-								My realtor
-							</Typography>
-						</Toolbar>
-					</AppBar>
-					<Drawer
-						className={classes.drawer}
-						variant="permanent"
-						classes={{
-							paper: classes.drawerPaper
-						}}
-					>
-						<div className={classes.toolbar} />
+			const drawer = (
+				<div>
+					
 						<Divider />
 						<center>
 							<Avatar src={`https://firebasestorage.googleapis.com/v0/b/realtors-profiles/o/${this.state.profilePicture}?alt=media`} className={classes.avatar} />
@@ -178,7 +216,64 @@ class home extends Component {
 								<ListItemText primary="Logout" />
 							</ListItem>
 						</List>
-					</Drawer>
+				</div>
+			);
+			const container = window !== undefined ? () => window().document.body : undefined;
+
+			return (
+				<div className={classes.root}>
+					<CssBaseline />
+					<AppBar position="fixed" className={classes.appBar}>
+						<Toolbar>
+						<IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={this.handleDrawerOpen}
+            className={classes.menuButton}
+          >
+            <MenuIcon />
+          </IconButton>
+							<Typography variant="h6" noWrap>
+								My realtor
+							</Typography>
+						</Toolbar>
+					</AppBar>
+					<nav className={classes.drawer} aria-label="mailbox folders">
+					<Hidden smUp implementation="css">
+					<Drawer
+					container = {container}
+						/* className={classes.drawer} */
+						variant="temporary" 
+						anchor="left"
+						open={this.state.mobileOpen}
+						onClose={this.handleDrawerClose}
+						classes={{
+						  paper: classes.drawerPaper,
+						}}
+						ModalProps={{
+						  keepMounted: true, // Better open performance on mobile.
+						}}
+					>        <div className={classes.drawerHeader}>
+					<IconButton onClick={this.handleDrawerClose}>
+					  <ChevronLeftIcon />
+					</IconButton>
+				  </div>
+						{drawer}
+						</Drawer>
+						</Hidden>
+						<Hidden xsDown implementation="css">
+          			<Drawer
+            			classes={{
+              			paper: classes.drawerPaper,
+            			}}
+            			variant="permanent"
+            			open
+          ><div className={classes.toolbar} />
+            {drawer}
+          </Drawer>
+        </Hidden>
+      </nav>
 
 					{this.state.render ? <Account /> : <Listing />}
 				</div>

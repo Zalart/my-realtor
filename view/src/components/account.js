@@ -37,9 +37,9 @@ const styles = (theme) => ({
 	uiProgess: {
 		position: 'fixed',
 		zIndex: '1000',
-		height: '31px',
-		width: '31px',
-		left: '50%',
+		height: '40px',
+		width: '40px',
+		right: '45%',
 		top: '35%'
 	},
 	progess: {
@@ -122,7 +122,7 @@ class account extends Component {
 		let form_data = new FormData();
 		form_data.append('image', this.state.image);
 		form_data.append('content', this.state.content);
-		//console.log(this.state.content);
+
 		axios.defaults.headers.common = { Authorization: `${authToken}` };
 		axios
 			.post('/api/user/image', form_data, {
@@ -179,7 +179,7 @@ class account extends Component {
 			return (
 				<main className={classes.content}>
 					<div className={classes.toolbar} />
-					{this.state.uiLoading && <CircularProgress size={150} className={classes.uiProgess} />}
+					{this.state.uiLoading && <CircularProgress className={classes.uiProgess} />}
 				</main>
 			);
 		} else {
@@ -190,7 +190,7 @@ class account extends Component {
 						<CardContent>
 							<div className={classes.details}>
 								<div>
-									<Typography className={classes.locationText} gutterBottom variant="h4">
+									<Typography className={classes.locationText} gutterBottom variant="h5">
 										{this.state.firstName} {this.state.lastName}
 									</Typography>
 									<Button
@@ -274,29 +274,6 @@ class account extends Component {
 											onChange={this.handleChange}
 										/>
 									</Grid>
-{/* 									<Grid item md={6} xs={12}>
-										<TextField
-											fullWidth
-											label="User Name"
-											margin="dense"
-											name="userHandle"
-											disabled={true}
-											variant="outlined"
-											value={this.state.username}
-											onChange={this.handleChange}
-										/>
-									</Grid> */}
-{/* 									<Grid item md={6} xs={12}>
-										<TextField
-											fullWidth
-											label="Country"
-											margin="dense"
-											name="country"
-											variant="outlined"
-											value={this.state.country}
-											onChange={this.handleChange}
-										/>
-									</Grid> */}
 								</Grid>
 							</CardContent>
 							<Divider />
@@ -316,7 +293,7 @@ class account extends Component {
 						}
 					>
 						Save details
-						{this.state.buttonLoading && <CircularProgress size={30} className={classes.progess} />}
+						{this.state.buttonLoading && <CircularProgress size={30} className={classes.progress} />}
 					</Button>
 				</main>
 			);

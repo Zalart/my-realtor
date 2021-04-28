@@ -95,9 +95,6 @@ const useStyles = makeStyles((theme) =>({
 		marginTop: 10,
         textAlign: 'center'
 	},
-	progess: {
-		position: 'absolute'
-	},
     footer: {
         backgroundColor: '#42444e',
         flex: '0 0 auto',
@@ -337,7 +334,7 @@ const handleSubmit = (event) => {
                 <Grid item xs={12} md={4} lg={4} className={classes.footerColWrapper}>
                 <Box className={classes.lightText}>Collaborated by:</Box>
                 <Box p={1} className={classes.contrastText}>Artur Zalewski</Box>
-                <Box className={classes.contrastText}>Alexey Fokin</Box>
+                <Box className={classes.contrastText}>Aliaksei Fokin</Box>
                 </Grid>
                 
                 </Grid>

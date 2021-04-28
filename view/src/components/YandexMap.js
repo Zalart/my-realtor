@@ -77,7 +77,7 @@ return (
 
     modules={['geocode']} 
     width={'100%'}
-    height={300} >
+    height={314} >
 
     {
      state.center && <Placemark geometry={state.center} options={{draggable: true}} 

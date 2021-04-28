@@ -35,6 +35,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Tooltip from '@material-ui/core/Tooltip';
+import Box from '@material-ui/core/Box';
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -59,7 +63,7 @@ const styles = ((theme) => ({
 		color: 'white',
 		textAlign: 'center',
 		position: 'absolute',
-		top: 14,
+		top: theme.mixins.toolbar - 36,
 		right: 10, 
 		backgroundColor: theme.palette.secondary.light,
 	},
@@ -70,12 +74,11 @@ const styles = ((theme) => ({
 		zIndex: 1
 	},
 	form: {
-		width: '98%',
-		marginLeft: 13,
+		width: '90%',
 		marginTop: theme.spacing(3)
 	},
 	root: {
-		minWidth: 470
+		minWidth: 320
 	},
 	bullet: {
 		display: 'inline-block',
@@ -88,9 +91,9 @@ const styles = ((theme) => ({
 	uiProgess: {
 		position: 'fixed',
 		zIndex: '1000',
-		height: '31px',
-		width: '31px',
-		left: '50%',
+		height: '40px',
+		width: '40px',
+		right: '45%',
 		top: '35%'
 	},
 	dialogStyle: {
@@ -110,12 +113,7 @@ const styles = ((theme) => ({
 
 	formControl: {
 		marginLeft: theme.spacing(0),
-		minWidth: 150,
-		width: '100%'
-	  },
-	  formControlRev: {
-		marginLeft: theme.spacing(-2),
-		minWidth: 150,
+		minWidth: 80,
 		width: '100%'
 	  },
 	  selectEmpty: {
@@ -159,6 +157,11 @@ const styles = ((theme) => ({
 	  },
 	  secondaryDark: {
 		  color: theme.palette.secondary.dark
+	  },
+	  centeredDialog: {
+		display: 'flex',
+		flexDirection: 'column',
+		  alignItems: 'center'
 	  }
     })
 );
@@ -192,6 +195,7 @@ class object extends Component {
 		this.handleEditClickOpen = this.handleEditClickOpen.bind(this);
 		this.handleViewOpen = this.handleViewOpen.bind(this);
 		this.handleSetImages = this.handleSetImages.bind(this);
+		this.handleConfirmDeleteOpen = this.handleConfirmDeleteOpen.bind(this);
 	}
 
 	handleChange = (event) => {
@@ -226,7 +230,7 @@ class object extends Component {
 		authMiddleWare(this.props.history);
 		const authToken = localStorage.getItem('AuthToken');
 		axios.defaults.headers.common = { Authorization: `${authToken}` };
-		let objectId = data.object.objectId;
+		let objectId = this.state.confirmDeleteOpen;
 		axios
 			.delete(`/api/object/${objectId}`)
 			.then(() => {
@@ -317,6 +321,11 @@ class object extends Component {
 			})
 		  })
 	}
+	handleConfirmDeleteOpen = (data) => {
+		this.setState({
+			confirmDeleteOpen: data,
+		});
+	}
 
 	render() {
 		const DialogTitle = withStyles(styles)((props) => {
@@ -360,11 +369,7 @@ class object extends Component {
 				open: true
 			});
 		};
-		const handleConfirmDeleteOpen = () => {
-			this.setState({
-				confirmDeleteOpen: true,
-			});
-		}
+
 
 		const handleSubmit = (event) => {
 			authMiddleWare(this.props.history);
@@ -413,9 +418,9 @@ class object extends Component {
 		const handleViewClose = () => {
 			this.setState({ viewOpen: false });
 		};
-		const handleConfirmDeleteClose = (event) => {
+		const handleConfirmDeleteClose = () => {
 			this.setState({ 
-				confirmDeleteOpen: false,
+				confirmDeleteOpen: '',
 			});
 		};
 
@@ -429,7 +434,7 @@ class object extends Component {
 			return (
 				<main className={classes.content}>
 					<div className={classes.toolbar} />
-					{this.state.uiLoading && <CircularProgress size={150} className={classes.uiProgess} />}
+					{this.state.uiLoading && <CircularProgress size={40} className={classes.uiProgess} />}
 				</main>
 			);
 		} else {
@@ -447,6 +452,7 @@ class object extends Component {
 						<AddCircleIcon style={{ fontSize: 60}} />
 					</IconButton>
 					<Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+						<div className={classes.centeredDialog}>
 						<AppBar className={classes.appBar}>
 							<Toolbar>
 								<IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
@@ -500,18 +506,22 @@ class object extends Component {
 									/>
 								</Grid>
 							</Grid>
-				<Grid container spacing={4} direction="row-reverse">
+					<Grid container spacing={4} direction="row-reverse" justify="space-between">
+					{/* <Grid container spacing={4} direction="row-reverse"></Grid> */}
 
-							{/* <Grid container item md={6} xs={12} spacing={0}> */}
-								<Grid item md={6} xs={12}>
-									<YandexMap address={this.state.address} handleAddressChange={this.handleAddressChange} />
-								</Grid> 
-							{/* </Grid> */}
-
-					<Grid container item md={6} xs={12} spacing={2}>
-						<Grid container item xs={12} spacing={0}>
-							<Grid item xs={6}>
-										<FormControl variant="outlined" required className={classes.formControlRev}>
+					{/* <Grid container item md={6} xs={12} spacing={0}> */}
+						<Grid container item md={6} xs={12}>
+							<Grid item xs={12}>
+								<YandexMap address={this.state.address} handleAddressChange={this.handleAddressChange} />
+							</Grid> 
+						</Grid> 
+					{/* </Grid> */}
+					
+						<Grid container item md={6} xs={12} spacing={2} style={{padding: 0, margin: 0}}>
+						
+							<Grid container item xs={12} spacing={2} style={{padding: 0, width: '100%', margin: 0,}}>
+								<Grid item xs={6} style={{padding: 16}}>
+										<FormControl variant="outlined" required className={classes.formControl}>
 										<InputLabel id="listingType-label">Listing Type</InputLabel>
 										<Select
 										//variant="outlined"
@@ -523,7 +533,6 @@ class object extends Component {
 										value={this.state.listingType}
 										onChange={this.handleChange}
 										label="Listing Type"
-										helperText={errors.listingType}
 										error={errors.listingType ? true : false}
 										>
 										<MenuItem value="">
@@ -534,11 +543,12 @@ class object extends Component {
 										<MenuItem value={'lots'}>Lot</MenuItem>
 										<MenuItem value={'commercial'}>Commercial</MenuItem>
 										</Select>
+										<FormHelperText >{errors.listingType}</FormHelperText>
 										</FormControl>
 									
 							</Grid>
-							<Grid item xs={6}>
-									<TextField
+							<Grid item xs={6} style={{padding: 16}}>
+									{/* <TextField
 										variant="outlined"
 										required
 										fullWidth
@@ -550,13 +560,30 @@ class object extends Component {
 										value={this.state.price}
 										error={errors.price ? true : false}
 										onChange={this.handleChange}
-									/>
+										startAdornment={<InputAdornment position="start">$</InputAdornment>}
+									/> */}
+									<FormControl fullWidth variant="outlined" required className={classes.formControl}>
+          <InputLabel htmlFor="sprice">Price</InputLabel>
+          <OutlinedInput
+		  required
+		  fullWidth
+		  autoComplete="price"
+            id="price"
+			name="price"
+			type="number"
+			error={errors.price ? true : false}
+            value={this.state.price}
+            onChange={this.handleChange}
+            startAdornment={<InputAdornment position="start">$</InputAdornment>}
+			labelWidth={60}
+          /><FormHelperText >{errors.price}</FormHelperText>
+        </FormControl>
 							</Grid>
-						</Grid>
+							</Grid>
+						
 
-
-			<Grid container item xs={12} spacing={2}>
-						<Grid item xs={4}>
+			<Grid container item xs={12} spacing={2} style={{margin:0, padding:0}}>
+						<Grid item xs={4} style={{padding: 16}}>
 									<TextField
 										variant="outlined"
 										required
@@ -572,20 +599,19 @@ class object extends Component {
 									/>
 								</Grid>
 
-							<Grid item xs={4}>
+							<Grid item xs={4} style={{padding: 16}}>
 							<FormControl variant="outlined" className={classes.formControl}>
-         <InputLabel id="bedrooms-label">Bedrooms</InputLabel>
+         <InputLabel id="bedrooms-label">Rooms</InputLabel>
         <Select
 		variant="outlined"
           labelId="bedrooms-label"
           id="bedrooms"
-		  label="Bedrooms"
+		  label="Rooms"
 		  name="bedrooms"
 		  required
 		  fullWidth
           value={this.state.bedrooms}
           onChange={this.handleChange}
-		  helperText={errors.bedrooms}
 		  error={errors.bedrooms ? true : false}
         >
           <MenuItem value="">
@@ -596,10 +622,10 @@ class object extends Component {
           <MenuItem value={'3'}>3</MenuItem>
 		  <MenuItem value={'4'}>4</MenuItem>
 		  <MenuItem value={'5'}>5</MenuItem>
-        </Select>
+        </Select><FormHelperText>{errors.bedrooms}</FormHelperText>
       </FormControl></Grid>
-	  <Grid item xs={4}>
-							<FormControl variant="outlined" className={classes.formControl}>
+	  <Grid item xs={4} style={{padding: 16}}>
+	<FormControl variant="outlined" className={classes.formControl}>
          <InputLabel id="floor-label">Floor</InputLabel>
         <Select
 		variant="outlined"
@@ -611,7 +637,6 @@ class object extends Component {
 		  fullWidth
           value={this.state.floor}
           onChange={this.handleChange}
-		  helperText={errors.floor}
 		  error={errors.floor ? true : false}
         >
           <MenuItem value="">
@@ -628,12 +653,13 @@ class object extends Component {
 		  <MenuItem value={'9'}>9</MenuItem>
 		  <MenuItem value={'10'}>10</MenuItem>
         </Select>
+		<FormHelperText>{errors.floor}</FormHelperText>
       </FormControl>
 								</Grid>
 								
 						</Grid>
 
-<Grid item xs={12}>
+<Grid item xs={12} style={{padding: 16}}>
 									<TextField
 										variant="outlined"
 										required
@@ -669,6 +695,7 @@ class object extends Component {
 									</Grid>
 									
 						</form>
+						</div>
 					</Dialog>
 				{/* Main cards view
 				TO add filter we should add a proper filter function based on the state filter property */}
@@ -688,7 +715,8 @@ class object extends Component {
 							
 							<Grid key={object.objectId} item xs={12}>
 								<Card className={classes.cardLayout} variant="outlined">
-								{
+									
+								{ object.imagesUrls[0] && 
 										object.imagesUrls.length > 0 ? <CardMedia
 										key={object.imagesUrls[0]}
 										className={classes.cardMedia}
@@ -716,18 +744,18 @@ class object extends Component {
 									<div className={classes.cardActionsContainer}>
 									<CardActions className={classes.cardActions}>
 									<Tooltip title="View" placement="left">
-									<IconButton size="large" color="primary" onClick={() => this.handleViewOpen({ object })} aria-label="view">
+									<IconButton size="medium" color="primary" onClick={() => this.handleViewOpen({ object })} aria-label="view">
         								<LaunchIcon />
       								</IconButton>
 									  </Tooltip>
 									  <Tooltip title="Edit" placement="left">
-									<IconButton size="large" color="primary" onClick={() => this.handleEditClickOpen({ object })} aria-label="edit">
+									<IconButton size="medium" color="primary" onClick={() => this.handleEditClickOpen({ object })} aria-label="edit">
         								<EditIcon />
       								</IconButton>
 									  </Tooltip>
-									{/* <IconButton size="medium" color="secondary" onClick={() => this.deleteObjectHandler({ object })} aria-label="delete"> */}
+									{/* <IconButton size="medium" className={classes.secondaryDark} onClick={() => this.deleteObjectHandler({ object })} aria-label="delete"> */}
 									<Tooltip title="Delete" placement="left">
-									<IconButton size="large" className={classes.secondaryDark} onClick={handleConfirmDeleteOpen} aria-label="delete">
+									<IconButton size="medium" className={classes.secondaryDark} onClick={() => this.handleConfirmDeleteOpen( object.objectId )} aria-label="delete">
         								<DeleteIcon />
       								</IconButton>
 									  </Tooltip>
@@ -743,14 +771,14 @@ class object extends Component {
 							 <DialogTitle id="alert-dialog-title">{"Delete the listing?"}</DialogTitle>
 							 <DialogContent>
 							   <DialogContentText id="alert-dialog-description">
-								 The listing wil be deleted permanently. Do you want to proceed?
+								 The listing {object.title} wil be deleted permanently. Do you want to proceed?
 							   </DialogContentText>
 							 </DialogContent>
 							 <DialogActions>
 							   <Button onClick={handleConfirmDeleteClose} color="primary">
 								 Cancel
 							   </Button>
-							   <Button onClick={() => this.deleteObjectHandler({ object })} color="secondary" autoFocus>
+							   <Button onClick={() => this.deleteObjectHandler()} color="secondary" autoFocus>
 								 Confirm
 							   </Button>
 							 </DialogActions>

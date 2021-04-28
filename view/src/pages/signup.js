@@ -348,7 +348,7 @@ const Signup = (props) => {
                                 !state.phoneNumber}
 						>
 							Sign Up
-							{loading && <CircularProgress size={30} className={classes.progess} />}
+							{loading && <CircularProgress size={40} className={classes.progess} />}
 						</Button>
 						<Grid container justify="flex-end">
 							<Grid item>
@@ -395,7 +395,7 @@ const Signup = (props) => {
                 <Grid item xs={12} md={4} lg={4} className={classes.footerColWrapper}>
                 <Box className={classes.lightText}>Collaborated by:</Box>
                 <Box p={1} className={classes.contrastText}>Artur Zalewski</Box>
-                <Box className={classes.contrastText}>Alexey Fokin</Box>
+                <Box className={classes.contrastText}>Aliaksei Fokin</Box>
                 </Grid>
                 
                 </Grid>

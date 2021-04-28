@@ -1,0 +1,22 @@
+/* .filepond--item {
+    width: calc(25% - .5em);
+} */
+
+@media (min-width: 20em) {
+    .filepond--item {
+        width: calc(50% - .5em);
+    }
+}
+
+
+@media (min-width: 30em) {
+    .filepond--item {
+        width: calc(33.3% - .5em);
+    }
+}
+
+@media (min-width: 50em) {
+    .filepond--item {
+        width: calc(20% - .5em);
+    }
+}
