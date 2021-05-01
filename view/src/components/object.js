@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import YandexMap from './YandexMap';
+/* import PdfRenderer from './PdfRenderer' */
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
@@ -39,6 +40,11 @@ import Box from '@material-ui/core/Box';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
+import SquareFootIcon from '@material-ui/icons/SquareFoot';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import photo from '../assets/photo.svg';
+import ViewQuiltIcon from '@material-ui/icons/ViewQuilt';
+import ImportExportIcon from '@material-ui/icons/ImportExport';
 
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -137,20 +143,18 @@ const styles = ((theme) => ({
 		
 	  },	  
 	  cardMedia: {
-		height: 160,
-		width: 230,
-		paddingLeft: 0,
+		height: '200px',
+		width: '100%',
+		objectFit: 'cover'
 	  },
-	  cardActionsContainer: {
+/* 	  cardActionsContainer: {
 		display: 'flex',
 		justifyContent: 'flex-end',
 		flex: '1 0 auto',
-	  },
+	  }, */
 	  cardActions: {
 		display: 'flex',
-		flexDirection: 'column',
 		justifyContent: 'center',
-		marginLeft: 8
 	  },
 	  inLineIcon: {
 		  verticalAlign: 'sub',
@@ -209,7 +213,7 @@ class object extends Component {
 		});
 	};
 
-	componentWillMount = () => {
+	UNSAFE_componentWillMount = () => {
 		authMiddleWare(this.props.history);
 		const authToken = localStorage.getItem('AuthToken');
 		axios.defaults.headers.common = { Authorization: `${authToken}` };
@@ -687,11 +691,13 @@ class object extends Component {
 					
 
 								
-								
-								
-								<Grid item xs={12}>
+								{
+								this.state.objectId &&  <Grid item xs={12}>
 									<FileUploader objectId = {this.state.objectId} handleSetImages={this.handleSetImages} imagesUrls={this.state.imagesUrls}/>
 									</Grid> 
+									}
+								
+								
 									</Grid>
 									
 						</form>
@@ -701,11 +707,11 @@ class object extends Component {
 				TO add filter we should add a proper filter function based on the state filter property */}
 					<Grid container spacing={4}>
 						{ !this.state.objects.length ? (
-							<Grid item xs={12}>
+							<Grid item md={6} xs={12}>
 								<Card className={classes.cardLayout} variant="outlined">
 								<CardContent className={classes.cardContent}>
-							<Typography component="h1" variant="h3" >
-								You have no listings yet...Try to add one
+							<Typography variant="body1" component="p" >
+								It's a shame! You have no listings...You should add one at least!
 							</Typography>
 							</CardContent>
 							</Card>
@@ -713,54 +719,74 @@ class object extends Component {
 							) :
 						this.state.objects.map((object) => (
 							
-							<Grid key={object.objectId} item xs={12}>
+							<Grid key={object.objectId} item md={6} xs={12}>
+								
 								<Card className={classes.cardLayout} variant="outlined">
-									
-								{ object.imagesUrls[0] && 
+							<Grid container item xs={12}>
+								<Grid item md={6} xs={12}>
+									{ object.imagesUrls[0] && 
 										object.imagesUrls.length > 0 ? <CardMedia
 										key={object.imagesUrls[0]}
 										className={classes.cardMedia}
 										image={`https://firebasestorage.googleapis.com/v0/b/objects-media/o/${object.imagesUrls[0].replace('/', '%2F')}?alt=media`}
-										title={object.title} /> : null
+										title={object.title} /> : 
+										<CardMedia
+										key={object.objectId}
+										className={classes.cardMedia}
+										image={photo}
+										title={'No Photo Added'} />
 									
-										} 
-										  
-									<div className={classes.cardDetails}>
-									<CardContent className={classes.cardContent}>
+										}
+									</Grid>
+								<Grid item md={6} xs={12}>
+									
+								 <CardContent className={classes.cardContent}>
 										<Typography variant="h5" component="h2">
 											{object.title}
+										</Typography>
+										<Typography variant="body1" component="p" style={{textTransform: 'uppercase'}}>
+											{object.listingType}
 										</Typography>
 										<Typography variant="body1" component="p">
 											<LocationOnIcon className={classes.inLineIcon} fontSize="small" color="primary"/>{`${object.address}`}
 										</Typography>
+										<Typography variant="body1" component="p">
+											<SquareFootIcon className={classes.inLineIcon} fontSize="small" color="primary"/>{`${object.area} m² | `}<ViewQuiltIcon className={classes.inLineIcon} fontSize="small" color="primary"/>{`${object.bedrooms} | `}<ImportExportIcon className={classes.inLineIcon} fontSize="small" color="primary"/>{`${object.floor}`}
+										</Typography>
 										<Typography variant="body2" component="p">
-											{`${object.body.substring(0, 65)}`}
+											{`${object.body.substring(0, 80)} ...`}
 										</Typography>
 										<Typography className={classes.pos} color="textSecondary">
 											{dayjs(object.createdAt).fromNow()}
 										</Typography>
 										</CardContent>
-									</div>
-									<div className={classes.cardActionsContainer}>
+								</Grid>
+									
+							</Grid>
+									<Grid item md={12} xs={12}>
+									
 									<CardActions className={classes.cardActions}>
-									<Tooltip title="View" placement="left">
+{/* 									<Tooltip title="View" placement="bottom">
 									<IconButton size="medium" color="primary" onClick={() => this.handleViewOpen({ object })} aria-label="view">
         								<LaunchIcon />
       								</IconButton>
-									  </Tooltip>
-									  <Tooltip title="Edit" placement="left">
+									  </Tooltip> */}
+									  <Tooltip title="Edit" placement="bottom">
 									<IconButton size="medium" color="primary" onClick={() => this.handleEditClickOpen({ object })} aria-label="edit">
         								<EditIcon />
       								</IconButton>
 									  </Tooltip>
 									{/* <IconButton size="medium" className={classes.secondaryDark} onClick={() => this.deleteObjectHandler({ object })} aria-label="delete"> */}
-									<Tooltip title="Delete" placement="left">
+									<Tooltip title="Delete" placement="bottom">
 									<IconButton size="medium" className={classes.secondaryDark} onClick={() => this.handleConfirmDeleteOpen( object.objectId )} aria-label="delete">
         								<DeleteIcon />
       								</IconButton>
+									  
 									  </Tooltip>
+									 {/*  <PdfRenderer listing={object} /> */}
 									</CardActions>
-									</div>
+									
+									</Grid>
 								</Card>
 								<Dialog
 							 open={confirmDeleteOpen}
@@ -783,6 +809,7 @@ class object extends Component {
 							   </Button>
 							 </DialogActions>
 						   </Dialog>
+						  
 							</Grid>
 						   
 						)) }

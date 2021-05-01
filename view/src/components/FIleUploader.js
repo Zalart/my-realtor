@@ -96,17 +96,31 @@ dropOnPage
 onpreparefile = {(file, output) => {
   const result = new Image();
   result.src = URL.createObjectURL(output);
-  console.log(result.src)
 }}
 status={(st)=> (console.log(st))}
 allowFilePoster={true}
 allowFileMetadata = {true}
-allowImageCrop={true} 
-imageCropAspectRatio={'3:2'} 
+/* allowImageCrop={true} 
+imageCropAspectRatio={'3:2'}  */
 imageResizeTargetHeight={'1000px'}
 imageResizeTargetWidth={'1500px'}
 allowImageResize = {true}
 allowImageTransform={true}
+/* imageTransformBeforeCreateBlob = { (canvas) =>
+    new Promise((resolve) => {
+      // Do something with the canvas, like drawing some text on it
+      const ctx = canvas.getContext("2d");
+      console.log('here')
+      ctx.font = "48px serif";
+      ctx.fillText("Hello world", 300, 300);
+
+      // return canvas to the plugin for further processing
+      resolve(canvas);
+      console.log('here 2')
+    })}
+imageTransformAfterCreateBlob={((blob) => new Promise((resolve) => {
+      resolve(blob);
+    }))} */
 
 fileMetadataObject = {fileMetadataObject}
 

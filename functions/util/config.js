@@ -1,11 +1,12 @@
+require('dotenv').config()
 module.exports = {
-    apiKey: "AIzaSyDVPpMnf4kb9HWNlfg7CBWU7dHMuannpcI",
-    authDomain: "realtor-s-routines.firebaseapp.com",
-    projectId: "realtor-s-routines",
-    storageBucket: "realtor-s-routines.appspot.com",
-    profilesStorageBucket: "realtors-profiles",
-    objectsStorageBucket: "objects-media",
-    messagingSenderId: "495056882505",
-    appId: "1:495056882505:web:923d3d95fe43d499daa898",
-    measurementId: "G-WF0C77PMYC"
+    apiKey: process.env.API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    projectId: process.env.PROJECT_ID,
+    storageBucket: process.env.STORAGE_BUCKET,
+    profilesStorageBucket: process.env.PROFILES_STORAGE_BUCKET,
+    objectsStorageBucket: process.env.OBJECTS_STORAGE_BUCKET,
+    messagingSenderId: process.env.MESSAGING_SENDER_ID,
+    appId: process.env.APP_ID,
+    measurementId: process.env.MEASUREMENT_ID
   };

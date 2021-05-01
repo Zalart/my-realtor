@@ -1,4 +1,4 @@
-import React, { Component, useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { YMaps, Map, Placemark } from 'react-yandex-maps';
 
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -12,38 +12,44 @@ import { Card, CardActions, CardContent, Divider, Button, Grid, TextField } from
 const initialState = {
     center: [43.686284, 21.837774],
     zoom: 16,
-   controls: [],
+   controls: ['zoomControl', 'geolocationControl'],
    behaviors: ["disable('scrollZoom')"],
+
 
 }
 
 
 const YandexMap = ({address, handleAddressChange}) => {
     const ymapRef = useRef(null);
+    
 
-const [state, setState] = useState(initialState);
+const [state, setState] = useState(initialState);         
 
-const geoCode = (ymaps) => {
-    if (!address) {
-        ymaps.geolocation.get().then((result)=> {
-            console.log("found geolocation")
-            setState({ ...state, center: result.geoObjects.get(0).geometry.getCoordinates() })
+
+        const geoCode = (ymaps) => {
+            if (!address) {
+               
+                ymaps.geolocation.get().then((result)=> {
+                    console.log("found geolocation")
+                    setState({ ...state, center: result.geoObjects.get(0).geometry.getCoordinates() })
+                    
+                }, function (e) {
+                    // Если местоположение невозможно получить, то просто создаем карту.
+                   setState({
+                    center: [43.686284, 21.837774],
+                    zoom: 16
+                })
+                });
+            } else {
+                console.log(ymaps)
+           return ymaps.geocode(address)
+              .then(result => setState({ ...state, center: result.geoObjects.get(0).geometry.getCoordinates() }))
+            }
+            }
+
             
-        }, function (e) {
-            // Если местоположение невозможно получить, то просто создаем карту.
-           setState({
-            center: [43.686284, 21.837774],
-            zoom: 16,
-
-
-        })
-        });
-    } else {
-   return ymaps.geocode(address)
-      .then(result => setState({ ...state, center: result.geoObjects.get(0).geometry.getCoordinates() }))
-    }
-    }
-
+ 
+    
 const reverseGeoCode = (e) => {
     ymapRef.current.geocode(e.get('target').geometry.getCoordinates())
     .then((res)=> {
@@ -68,7 +74,7 @@ return (
 <Map state={state} 
 
     onLoad = {ymapsInstance => {
-    geoCode(ymapsInstance);
+     geoCode(ymapsInstance); 
     ymapRef.current = ymapsInstance;
  }} 
     lang={'en_US'}
@@ -80,7 +86,7 @@ return (
     height={314} >
 
     {
-     state.center && <Placemark geometry={state.center} options={{draggable: true}} 
+     state.center && <Placemark geometry={state.center} options={{draggable: true, preset: 'islands#orangeHomeIcon'}} 
      onDragEnd = {e => reverseGeoCode(e) } />    
             }
 </Map>
